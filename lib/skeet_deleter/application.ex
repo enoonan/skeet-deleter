@@ -20,6 +20,7 @@ defmodule SkeetDeleter.Application do
       # Start a worker by calling: SkeetDeleter.Worker.start_link(arg)
       # {SkeetDeleter.Worker, arg},
       # Start to serve requests, typically the last entry
+      SkeetDeleter.Vault,
       SkeetDeleterWeb.Endpoint,
       {AshAuthentication.Supervisor, [otp_app: :skeet_deleter]}
     ]

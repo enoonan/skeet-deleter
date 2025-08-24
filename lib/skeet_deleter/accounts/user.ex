@@ -4,7 +4,7 @@ defmodule SkeetDeleter.Accounts.User do
     domain: SkeetDeleter.Accounts,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshAuthentication]
+    extensions: [AshAuthentication, AshCloak]
 
   authentication do
     add_ons do
@@ -37,8 +37,22 @@ defmodule SkeetDeleter.Accounts.User do
     repo SkeetDeleter.Repo
   end
 
+  cloak do
+    vault(SkeetDeleter.Vault)
+    attributes([:app_key])
+  end
+
   actions do
     defaults [:read]
+
+    update :update do
+      primary? true
+      accept [:email, :handle]
+    end
+
+    update :update_app_key do
+      accept [:app_key]
+    end
 
     read :get_by_subject do
       description "Get a user by the subject claim in a JWT"
@@ -92,7 +106,12 @@ defmodule SkeetDeleter.Accounts.User do
       authorize_if always()
     end
 
+    policy actor_attribute_equals(:role, :admin) do
+      authorize_if always()
+    end
+
     policy always() do
+      authorize_if expr(id == ^actor(:id))
       forbid_if always()
     end
   end
@@ -104,6 +123,19 @@ defmodule SkeetDeleter.Accounts.User do
       allow_nil? false
       public? true
     end
+
+    attribute :handle, :string do
+      public? true
+    end
+
+    attribute :role, :atom do
+      allow_nil? false
+      public? true
+      constraints one_of: [:subscriber, :super]
+      default :subscriber
+    end
+
+    attribute :app_key, :string
   end
 
   identities do

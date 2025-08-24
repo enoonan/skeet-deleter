@@ -63,7 +63,7 @@ config :spark,
 config :skeet_deleter,
   ecto_repos: [SkeetDeleter.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [SkeetDeleter.Accounts]
+  ash_domains: [SkeetDeleter.Actions, SkeetDeleter.Accounts]
 
 # Configures the endpoint
 config :skeet_deleter, SkeetDeleterWeb.Endpoint,

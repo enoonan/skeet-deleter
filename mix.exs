@@ -41,6 +41,7 @@ defmodule SkeetDeleter.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:dotenvy, "~> 1.0.0"},
       {:mishka_chelekom, "~> 0.0", only: [:dev]},
       {:ex_money_sql, "~> 1.0"},
       {:ex_cldr, "~> 2.0"},
