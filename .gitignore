@@ -35,3 +35,4 @@ skeet_deleter-*.tar
 npm-debug.log
 /assets/node_modules/
 
+postgres

@@ -85,7 +85,7 @@ defmodule SkeetDeleterWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import SkeetDeleterWeb.CoreComponents
+      use SkeetDeleterWeb.Components.MishkaComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS
