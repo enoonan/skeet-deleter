@@ -57,22 +57,27 @@ defmodule SkeetDeleterWeb.Router do
                   ]
 
     # Remove this if you do not want to use the reset password feature
-    reset_route auth_routes_prefix: "/auth",
-                overrides: [
-                  SkeetDeleterWeb.AuthOverrides,
-                  AshAuthentication.Phoenix.Overrides.Default
-                ]
+    # reset_route auth_routes_prefix: "/auth",
+    #             overrides: [
+    #               SkeetDeleterWeb.AuthOverrides,
+    #               AshAuthentication.Phoenix.Overrides.Default
+    #             ]
 
     # Remove this if you do not use the confirmation strategy
-    confirm_route SkeetDeleter.Accounts.User, :confirm_new_user,
-      auth_routes_prefix: "/auth",
-      overrides: [SkeetDeleterWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    # confirm_route SkeetDeleter.Accounts.User, :confirm_new_user,
+    #   auth_routes_prefix: "/auth",
+    #   overrides: [SkeetDeleterWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
 
     # Remove this if you do not use the magic link strategy.
     magic_sign_in_route(SkeetDeleter.Accounts.User, :magic_link,
       auth_routes_prefix: "/auth",
       overrides: [SkeetDeleterWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
     )
+
+    ash_authentication_live_session :authentication_required,
+      on_mount: {SkeetDeleterWeb.LiveUserAuth, :live_user_required} do
+      live "/dashboard", DashboardLive
+    end
   end
 
   # Other scopes may use custom stacks.

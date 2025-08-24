@@ -1,0 +1,55 @@
+<Layouts.app flash={@flash}>
+  <h2 class="text-3xl">Step 1: Profile</h2>
+
+  <.form_wrapper for={@user_form} phx-submit="update_user">
+    <.email_field
+      field={@user_form[:email]}
+      label="Email"
+      name="email"
+      variant="unbordered"
+      color="primary"
+    />
+
+    <.text_field
+      class="mt-4"
+      field={@user_form[:handle]}
+      label="Blue Sky Handle"
+      name="handle"
+      variant="unbordered"
+      color="primary"
+      placeholder="yourname.bsky.social"
+    />
+
+    <button class="btn btn-primary mt-4" type="submit">Save</button>
+  </.form_wrapper>
+
+  <hr class="my-8" />
+  <h2 class="text-3xl">Step 2: App Password</h2>
+  <p class="mt-4 text-sm">
+    Create an <a
+      class="link"
+      target="_blank"
+      rel="nofollow noopener"
+      href="https://bsky.app/settings/app-passwords"
+    >App Password here</a>.
+  </p>
+  <p class="mt-2 text-sm">
+    The App Password allows Skeet Deleter to run actions against your Blue Sky account, such as deleting posts. It is stored with strong encryption. Do not share or store your app password. If it leaks, delete it from your Bluesky profile.
+  </p>
+  <.form_wrapper for={@app_key_form} phx-submit="update_app_key">
+    <.password_field
+      class="mt-4"
+      field={@app_key_form[:app_key]}
+      label="App Password"
+      name="app_key"
+      variant="unbordered"
+      color="primary"
+      placeholder="*****"
+    />
+
+    <button class="btn btn-primary mt-4" type="submit">Save</button>
+  </.form_wrapper>
+
+  <hr class="my-8" />
+  <h2 class="text-3xl">Step 3: Configure Delete Schedule</h2>
+</Layouts.app>
