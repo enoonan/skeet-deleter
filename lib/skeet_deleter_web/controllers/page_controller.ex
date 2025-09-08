@@ -3,7 +3,7 @@ defmodule SkeetDeleterWeb.PageController do
 
   def home(conn, _params) do
     case Map.get(conn.assigns, :current_user) do
-      nil -> conn |> redirect(to: ~p"/sign-in")
+      nil -> conn |> redirect(to: ~p"/bsky/oauth/sign-in-register")
       _ -> render(conn, :home)
     end
   end

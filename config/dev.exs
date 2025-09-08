@@ -1,25 +1,8 @@
 import Config
 config :ash, policies: [show_policy_breakdowns?: true]
 
-# Configure your database
-config :skeet_deleter, SkeetDeleter.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "skeet_deleter_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
-# For development, we disable any cache and enable
-# debugging and code reloading.
-#
-# The watchers configuration can be used to run external
-# watchers to your application. For example, we can use it
-# to bundle .js and .css sources.
 config :skeet_deleter, SkeetDeleterWeb.Endpoint,
-  # Binding to loopback ipv4 address prevents access from other machines.
-  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  url: [host: "6e1551ee087b.ngrok-free.app", port: 443, scheme: "https"],
   http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4000")],
   check_origin: false,
   code_reloader: true,
@@ -29,6 +12,16 @@ config :skeet_deleter, SkeetDeleterWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:skeet_deleter, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:skeet_deleter, ~w(--watch)]}
   ]
+
+# Configure your database
+config :skeet_deleter, SkeetDeleter.Repo,
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "skeet_deleter_dev",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
 
 # ## SSL Support
 #

@@ -41,20 +41,23 @@ defmodule SkeetDeleterWeb.Router do
 
   scope "/", SkeetDeleterWeb do
     pipe_through :browser
-
+    get "/bsky/oauth/sign-in-register", AtProtoOauthController, :sign_in_register
+    post "/bsky/oauth/sign-in-register", AtProtoOauthController, :do_sign_in_register
+    get "/bsky/oauth/callback", AtProtoOauthController, :oauth_callback
     get "/", PageController, :home
-    auth_routes AuthController, SkeetDeleter.Accounts.User, path: "/auth"
-    sign_out_route AuthController
+    get "/sign-out", AuthController, :sign_out
+    # auth_routes AuthController, SkeetDeleter.Accounts.User, path: "/auth"
+    # sign_out_route AuthController
 
     # Remove these if you'd like to use your own authentication views
-    sign_in_route register_path: "/register",
-                  reset_path: "/reset",
-                  auth_routes_prefix: "/auth",
-                  on_mount: [{SkeetDeleterWeb.LiveUserAuth, :live_no_user}],
-                  overrides: [
-                    SkeetDeleterWeb.AuthOverrides,
-                    AshAuthentication.Phoenix.Overrides.Default
-                  ]
+    # sign_in_route register_path: "/register",
+    #               reset_path: "/reset",
+    #               auth_routes_prefix: "/auth",
+    #               on_mount: [{SkeetDeleterWeb.LiveUserAuth, :live_no_user}],
+    #               overrides: [
+    #                 SkeetDeleterWeb.AuthOverrides,
+    #                 AshAuthentication.Phoenix.Overrides.Default
+    #               ]
 
     # Remove this if you do not want to use the reset password feature
     # reset_route auth_routes_prefix: "/auth",
@@ -69,21 +72,23 @@ defmodule SkeetDeleterWeb.Router do
     #   overrides: [SkeetDeleterWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
 
     # Remove this if you do not use the magic link strategy.
-    magic_sign_in_route(SkeetDeleter.Accounts.User, :magic_link,
-      auth_routes_prefix: "/auth",
-      overrides: [SkeetDeleterWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
-    )
+    # magic_sign_in_route(SkeetDeleter.Accounts.User, :magic_link,
+    #   auth_routes_prefix: "/auth",
+    #   overrides: [SkeetDeleterWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    # )
+    live "/dashboard", DashboardLive
 
-    ash_authentication_live_session :authentication_required,
-      on_mount: {SkeetDeleterWeb.LiveUserAuth, :live_user_required} do
-      live "/dashboard", DashboardLive
-    end
+    # ash_authentication_live_session :authentication_required,
+    #   on_mount: {SkeetDeleterWeb.LiveUserAuth, :live_user_required} do
+    # end
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", SkeetDeleterWeb do
-  #   pipe_through :api
-  # end
+  scope "/", SkeetDeleterWeb do
+    pipe_through :api
+    get "/bsky/oauth/client-metadata.json", AtProtoOauthController, :client_metadata
+    get "/bsky/oauth/jwks.json", AtProtoOauthController, :jwks
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:skeet_deleter, :dev_routes) do
@@ -103,7 +108,6 @@ defmodule SkeetDeleterWeb.Router do
 
     scope "/" do
       pipe_through :browser
-
       oban_dashboard("/oban")
     end
   end

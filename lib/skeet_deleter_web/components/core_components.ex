@@ -257,10 +257,13 @@ defmodule SkeetDeleterWeb.CoreComponents do
           name={@name}
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-          class={[
-            @class || "w-full input",
-            @errors != [] && (@error_class || "input-error")
-          ]}
+          class={
+            [
+              @class || "w-full input",
+              @errors != [] && (@error_class || "input-error")
+            ]
+            |> IO.inspect()
+          }
           {@rest}
         />
       </label>

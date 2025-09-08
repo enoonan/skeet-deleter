@@ -35,28 +35,35 @@ defmodule SkeetDeleterWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
+    <header class="navbar bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 lg:px-8 shadow-sm">
       <div class="flex-1">
         <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <span class="text-sm font-semibold">Skeet Deleter</span>
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H7a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </div>
+          <span class="text-lg font-bold text-gray-900 dark:text-gray-100">Skeet Deleter</span>
         </a>
       </div>
       <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-2 items-center">
+        <ul class="flex items-center space-x-4">
           <li>
             <.theme_toggle />
           </li>
           <li>
-            <a href={~p"/sign-out"} class="">
+            <a
+              href={~p"/sign-out"}
+              class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            >
               Sign Out
             </a>
           </li>
         </ul>
       </div>
     </header>
-
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
+    <main class="y-20">
+      <div class="mx-auto  space-y-4">
         {render_slot(@inner_block)}
       </div>
     </main>

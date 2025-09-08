@@ -11,8 +11,10 @@ defmodule SkeetDeleter.Accounts do
     resource SkeetDeleter.Accounts.Token
 
     resource SkeetDeleter.Accounts.User do
+      define :read_users, action: :read
+      define :get_user_by_did, action: :read, get_by: [:did]
+      define :create_user, action: :create
       define :update_user, action: :update
-      define :update_user_app_key, action: :update_app_key
     end
   end
 end

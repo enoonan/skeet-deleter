@@ -1,0 +1,23 @@
+<Layouts.flash_group flash={@flash} />
+<div class="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold text-gray-900 text-center mb-6">
+      Sign In With Blue Sky
+    </h2>
+
+    <.form for={@form} class="space-y-4" action={~p"/bsky/oauth/sign-in-register"}>
+      <.input
+        field={@form[:handle]}
+        placeholder="your-handle.bsky.social"
+        class="w-full input input-lg px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors bg-white"
+      />
+
+      <button
+        type="submit"
+        class="w-full bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-sky-600 hover:to-blue-700 transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+      >
+        Continue with Bluesky
+      </button>
+    </.form>
+  </div>
+</div>

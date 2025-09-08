@@ -13,6 +13,8 @@ config :skeet_deleter, SkeetDeleter.Vault,
     }
   ]
 
+config :skeet_deleter, jwk_key: env!("JWK_KEY") |> JOSE.JWK.from_binary() |> JOSE.JWK.to_map()
+
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration

@@ -71,6 +71,7 @@ defmodule SkeetDeleterWeb.Components.InputField do
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
+  attr :class, :string, default: nil, doc: "the input class to use over defaults"
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
@@ -167,7 +168,7 @@ defmodule SkeetDeleterWeb.Components.InputField do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 dark:text-zinc-200 focus:ring-0 sm:text-sm sm:leading-6",
+          @class || "w-full input",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}

@@ -86,7 +86,6 @@ defmodule SkeetDeleterWeb do
       import Phoenix.HTML
       # Core UI components
       use SkeetDeleterWeb.Components.MishkaComponents
-
       # Common modules used in templates
       alias Phoenix.LiveView.JS
       alias SkeetDeleterWeb.Layouts

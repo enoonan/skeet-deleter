@@ -41,7 +41,7 @@ defmodule SkeetDeleterWeb.AuthController do
 
     conn
     |> put_flash(:error, message)
-    |> redirect(to: ~p"/sign-in")
+    |> redirect(to: ~p"/bsky/oauth/sign-in-register")
   end
 
   def sign_out(conn, _params) do

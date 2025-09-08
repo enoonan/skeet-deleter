@@ -1,55 +1,93 @@
 <Layouts.app flash={@flash}>
-  <h2 class="text-3xl">Step 1: Profile</h2>
+  <div class="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 w-full max-w-lg">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center mb-8">
+        Configure Delete Schedule
+      </h2>
 
-  <.form_wrapper for={@user_form} phx-submit="update_user">
-    <.email_field
-      field={@user_form[:email]}
-      label="Email"
-      name="email"
-      variant="unbordered"
-      color="primary"
-    />
+      <.form for={@action_form} phx-submit="update_action" class="space-y-6">
+        <div class="space-y-4">
+          <p class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+            I want to delete all...
+          </p>
 
-    <.text_field
-      class="mt-4"
-      field={@user_form[:handle]}
-      label="Blue Sky Handle"
-      name="handle"
-      variant="unbordered"
-      color="primary"
-      placeholder="yourname.bsky.social"
-    />
+          <div class="space-y-3">
+            <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-sky-50 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+              <.input
+                field={@action_form[:posts_without_images]}
+                type="checkbox"
+                class="checkbox checkbox-primary mr-3"
+              />
+              <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium">
+                Posts without images
+              </span>
+            </label>
 
-    <button class="btn btn-primary mt-4" type="submit">Save</button>
-  </.form_wrapper>
+            <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-sky-50 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+              <.input
+                field={@action_form[:posts_with_images]}
+                type="checkbox"
+                class="checkbox checkbox-primary mr-3"
+              />
+              <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium">
+                Posts with images
+              </span>
+            </label>
 
-  <hr class="my-8" />
-  <h2 class="text-3xl">Step 2: App Password</h2>
-  <p class="mt-4 text-sm">
-    Create an <a
-      class="link"
-      target="_blank"
-      rel="nofollow noopener"
-      href="https://bsky.app/settings/app-passwords"
-    >App Password here</a>.
-  </p>
-  <p class="mt-2 text-sm">
-    The App Password allows Skeet Deleter to run actions against your Blue Sky account, such as deleting posts. It is stored with strong encryption. Do not share or store your app password. If it leaks, delete it from your Bluesky profile.
-  </p>
-  <.form_wrapper for={@app_key_form} phx-submit="update_app_key">
-    <.password_field
-      class="mt-4"
-      field={@app_key_form[:app_key]}
-      label="App Password"
-      name="app_key"
-      variant="unbordered"
-      color="primary"
-      placeholder="*****"
-    />
+            <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-sky-50 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+              <.input
+                field={@action_form[:reposts]}
+                type="checkbox"
+                class="checkbox checkbox-primary mr-3"
+              />
+              <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium">
+                Reposts
+              </span>
+            </label>
+            <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-sky-50 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+              <.input
+                field={@action_form[:likes]}
+                type="checkbox"
+                class="checkbox checkbox-primary mr-3"
+              />
+              <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium">
+                Likes
+              </span>
+            </label>
+            <!-- Repeat for other checkboxes... -->
+          </div>
 
-    <button class="btn btn-primary mt-4" type="submit">Save</button>
-  </.form_wrapper>
+          <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <label class="block text-gray-700 dark:text-gray-300 font-medium mb-3">
+              ... which are older than
+            </label>
+            <div class="flex items-center space-x-3">
+              <.input
+                field={@action_form[:max_age]}
+                type="number"
+                placeholder="28"
+                class="input input-bordered dark:bg-gray-600 dark:border-gray-500 dark:text-gray-100 w-24 text-center"
+              />
+              <span class="text-gray-600 dark:text-gray-400 font-medium">days</span>
+            </div>
+          </div>
+        </div>
 
-  <hr class="my-8" />
-  <h2 class="text-3xl">Step 3: Configure Delete Schedule</h2>
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+        >
+          Save Schedule
+        </button>
+      </.form>
+      
+<!-- Info section -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
+        <div class="text-sm text-blue-800 dark:text-blue-200">
+          <p class="font-medium mb-1">Deletion runs daily at midnight UTC</p>
+          <p>Once deleted, posts cannot be recovered. Choose your settings carefully.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layouts.app>

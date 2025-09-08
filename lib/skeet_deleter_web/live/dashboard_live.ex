@@ -1,70 +1,57 @@
 defmodule SkeetDeleterWeb.DashboardLive do
-  alias SkeetDeleter.Accounts
+  alias SkeetDeleter.Actions
   use SkeetDeleterWeb, :live_view
 
-  def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
-    dbg(user)
+  def mount(_params, session, socket) do
+    %{"current_user" => user} = session
+    user = Ash.load!(user, [:actions], actor: user)
 
-    user_form = Accounts.form_to_update_user(user, actor: user) |> to_form()
+    action =
+      case user.actions do
+        [a | _] -> a
+        [] -> Actions.create_action!(%{user_id: user.id})
+      end
 
-    app_key_form = Accounts.form_to_update_user_app_key(user, actor: user) |> to_form()
+    action_form = Actions.form_to_update_action(action, actor: user) |> to_form()
 
     {:ok,
      socket
-     |> assign(:user_form, user_form)
-     |> assign(:app_key_form, app_key_form)}
+     |> assign(:current_user, user)
+     |> assign(:action, action)
+     |> assign(:action_form, action_form)}
   end
 
-  def handle_event("update_user", params, socket) do
-    %{assigns: %{user_form: form, current_user: current_user}} = socket
+  def handle_event("update_action", %{"form" => params}, socket) do
+    %{assigns: %{action_form: form, current_user: current_user}} = socket
+    dbg(params)
 
-    case AshPhoenix.Form.submit(form, params: params) |> dbg do
-      {:ok, user} ->
-        user_form =
-          Accounts.form_to_update_user(user, actor: current_user) |> to_form()
+    truthy = ["on", 1, "1", true, "true"]
+
+    params =
+      params
+      |> Map.update("likes", false, &(&1 in truthy))
+      |> Map.update("reposts", false, &(&1 in truthy))
+      |> Map.update("posts_with_images", false, &(&1 in truthy))
+      |> Map.update("posts_without_images", false, &(&1 in truthy))
+
+    case AshPhoenix.Form.submit(form, params: params) do
+      {:ok, action} ->
+        action_form =
+          Actions.form_to_update_action(action, actor: current_user) |> to_form()
 
         {
           :noreply,
           socket
-          |> assign(:current_user, user)
-          |> assign(:user_form, user_form)
-          |> put_flash(:success, "Updates saved!")
-          |> dbg
-        }
-
-      {:error, user_form} ->
-        socket =
-          socket
-          |> put_flash(:error, "Something went wrong")
-          |> assign(:user_form, user_form)
-          |> then(fn s -> dbg(s.assigns) end)
-
-        {:noreply, socket}
-    end
-  end
-
-  def handle_event("update_app_key", params, socket) do
-    %{assigns: %{app_key_form: form, current_user: current_user}} = socket
-
-    case AshPhoenix.Form.submit(form, params: params) |> dbg do
-      {:ok, user} ->
-        app_key_form =
-          Accounts.form_to_update_user_app_key(user, actor: current_user) |> to_form()
-
-        {
-          :noreply,
-          socket
-          |> assign(:current_user, user)
-          |> assign(:app_key_form, app_key_form)
+          |> assign(:action, action)
+          |> assign(:action_form, action_form)
           |> put_flash(:success, "Updates saved!")
         }
 
-      {:error, app_key_form} ->
+      {:error, action_form} ->
         socket =
           socket
           |> put_flash(:error, "Something went wrong")
-          |> assign(:app_key_form, app_key_form)
+          |> assign(:action_form, action_form)
 
         {:noreply, socket}
     end
